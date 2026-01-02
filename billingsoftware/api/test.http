@@ -25,13 +25,13 @@ Content-Disposition: form-data; name="category"
 Content-Type: application/json
 
 {
-  "name": "Keyboards",
-  "description": "all kinds of keyboards available",
+  "name": "Mouses",
+  "description": "all kinds of mouses available",
   "bgColor": "#ffffff"
 }
 --boundary123
-Content-Disposition: form-data; name="file"; filename="keyboard.png"
+Content-Disposition: form-data; name="file"; filename="mouse.png"
 Content-Type: image/png
 
-< imgs/keyboard.png
+< imgs/mouse.png
 --boundary123--
