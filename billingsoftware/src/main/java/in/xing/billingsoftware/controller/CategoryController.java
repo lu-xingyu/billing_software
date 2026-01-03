@@ -14,13 +14,12 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping
+    @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryResponse addCategory(@RequestPart("category") String categoryString,
                                         @RequestPart("file") MultipartFile file) {
@@ -52,7 +51,7 @@ public class CategoryController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{categoryId}")
+    @DeleteMapping("/admin/{categoryId}")
     public void remove(@PathVariable String categoryId) {
         try {
             categoryService.delete(categoryId);

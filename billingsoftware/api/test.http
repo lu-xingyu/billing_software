@@ -27,7 +27,7 @@ Content-Type: application/json
 {
   "name": "Mouses",
   "description": "all kinds of mouses available",
-  "bgColor": "#ffffff"
+  "bgColor": "#FF6B81"
 }
 --boundary123
 Content-Disposition: form-data; name="file"; filename="mouse.png"
