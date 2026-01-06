@@ -2,6 +2,7 @@ package in.xing.billingsoftware.controller;
 
 import in.xing.billingsoftware.io.AuthRequest;
 import in.xing.billingsoftware.io.AuthResponse;
+import in.xing.billingsoftware.service.UserService;
 import in.xing.billingsoftware.service.impl.AppUserDetailsService;
 import in.xing.billingsoftware.util.JwtUtil;
 import io.jsonwebtoken.Jwt;
@@ -28,21 +29,21 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final AppUserDetailsService appUserDetailsService;
     private final JwtUtil jwtUtil;
+    private final UserService userService;
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) throws Exception {
         authenticate(request.getEmail(), request.getPassword());
         final UserDetails userDetails = appUserDetailsService.loadUserByUsername(request.getEmail());
         final String jwtToken = jwtUtil.generateToken(userDetails);
-        // TODO: fetch the role from repository
-        return new AuthResponse(request.getEmail(), "USER", jwtToken);
+        String role = userService.getUserRole(request.getEmail());
+        return new AuthResponse(request.getEmail(), jwtToken, role);
 
     }
 
     private void authenticate(String email, String password) throws Exception{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-
         }catch (DisabledException e) {
             throw new Exception("User disabled"); // checked Exception
         }catch (BadCredentialsException e) {

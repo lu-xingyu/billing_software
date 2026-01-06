@@ -1,7 +1,9 @@
 package in.xing.billingsoftware.config;
 
+import in.xing.billingsoftware.filters.JwtRequestFilter;
 import in.xing.billingsoftware.service.impl.AppUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -28,16 +31,18 @@ import java.util.List;
 public class SecurityConfig {
 
     private final AppUserDetailsService appUserDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll()
+            .authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/encode").permitAll()
                     .requestMatchers("/category", "/item").hasAnyRole("USER", "ADMIN")
-                    .anyRequest().authenticated()
-                    .requestMatchers("/admin/**").hasRole("ADMIN"))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().authenticated())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
