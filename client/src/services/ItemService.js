@@ -1,23 +1,23 @@
 import axios from "axios";
 
-export const addCategory = async (category) => {
+export const addItem = async (item) => {
   return await axios.post(
-    'http://localhost:8080/api/v1.0/admin/categories', 
-    category, 
+    'http://localhost:8080/api/v1.0/admin/categories',
+    item,
     { headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}}
   );
 }
 
-export const deleteCategory = async(categoryId) => {
+export const deleteItem = async (itemId) => {
   return await axios.delete(
-    `http://localhost:8080/api/v1.0/cadmin/admin/categories/${categoryId}`,
+    'http://localhost:8080/api/v1.0/admin/items/${itemId}',
     { headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}}
-  );
+  )
 }
 
-export const fetchCategories = async () => {
+export const fetchItems = async () => {
   return await axios.get(
-    'http://localhost:8080/api/v1.0/categories',
+    'http://localhost:8080/api/v1.0//items',
     { headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}}
-  );
+  )
 }

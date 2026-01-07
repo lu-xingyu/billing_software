@@ -13,11 +13,11 @@ GET http://localhost:8080/api/v1.0/categories
 Content-Type: application/json
 
 ### delete category
-DELETE http://localhost:8080/api/v1.0/categories/7be165b6-4d72-43d4-9dc5-7ac85040aaaf
+DELETE http://localhost:8080/api/v1.0/admin/categories/7be165b6-4d72-43d4-9dc5-7ac85040aaaf
 Content-Type: application/json
 
 ### add category with file
-POST http://localhost:8080/api/v1.0/categories
+POST http://localhost:8080/api/v1.0/admin/categories
 Content-Type: multipart/form-data; boundary=boundary123
 
 --boundary123
@@ -83,7 +83,7 @@ Content-Type: application/json
 
 ### read users
 GET http://localhost:8080/api/v1.0/admin/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3Njc3MDg2NzUsImV4cCI6MTc2Nzc0NDY3NX0.g_uy5CAX9lOjf6oAte3MtXy89oEy1b02ZQcoxEIAlRg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3Njc3OTQ4ODYsImV4cCI6MTc2NzgzMDg4Nn0.PhrN3o6WwTJLntF7NZJ5bJO1X-Zfe2M4snkTR6TBR-A
 
 ### add item with file
 POST http://localhost:8080/api/v1.0/admin/items

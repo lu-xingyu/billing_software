@@ -3,7 +3,7 @@ package in.xing.billingsoftware.config;
 import in.xing.billingsoftware.filters.JwtRequestFilter;
 import in.xing.billingsoftware.service.impl.AppUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,10 +35,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.cors(Customizer.withDefaults())
+        http
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(List.of("http://localhost:5173"));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                config.setAllowedHeaders(List.of("*"));
+                config.setAllowCredentials(true);
+                return config;
+            }))
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/encode").permitAll()
-                    .requestMatchers("/category", "/item").hasAnyRole("USER", "ADMIN")
+            .authorizeHttpRequests(auth ->
+                auth.requestMatchers("/login", "/encode").permitAll()
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers("/categories", "/item").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
