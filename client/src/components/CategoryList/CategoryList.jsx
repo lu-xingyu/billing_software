@@ -29,7 +29,6 @@ const CategoryList = ()=> {
   }
 
 
-
   return (
     <div className="category-list-container" style={{height: '100vh', overflowY: 'auto', overflowX: 'hidden'}}>
       <div className="row pe-2">
@@ -58,7 +57,7 @@ const CategoryList = ()=> {
                 </div>
                 <div className="flex-grow-1">
                   <h5 className="mb-1 text-white">{category.name}</h5>
-                  <p className="mb-0 text-white">5 Items</p>
+                  <p className="mb-0 text-white">{category.items} Items</p>
                 </div>
                 <div>
                   <button className="btn btn-danger btn-sm" onClick={() => deleteByCategoryId(category.categoryId)}>
@@ -68,10 +67,8 @@ const CategoryList = ()=> {
               </div>
             </div>
           </div>
-
         ))}
       </div>
-
     </div>
   )
 }
