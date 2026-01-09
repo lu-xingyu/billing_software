@@ -9,6 +9,25 @@ export const AppContextProvider = (props) => {
   const [categories, setCategories] = useState([]);
   const [itemsData, setItemsData] = useState([]);
   const [auth, setAuth] = useState({ token: null, role: null });
+  const [cartItems, setCartItems] = useState([])
+
+  const addToCart = (item) => {
+    const existingItem = cartItems.find(cartItem => cartItem.itemId === item.itemId)
+    if (existingItem) {
+      setCartItems(cartItems.map(cartItem => cartItem.itemId === item.itemId ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem));
+    } else {
+      setCartItems([...cartItems, { ...item, quantity: 1 }])
+    }
+  }
+
+  const removeFromCart = (itemId) => {
+    setCartItems(cartItems.filter(item => item.itemId !== itemId))
+  }
+
+  const updateQuantity = (itemId, newQuantity) => {
+    setCartItems(cartItems.map(item => item.itemId === itemId ? { ...item, quantity: newQuantity } : item))
+  }
+  
 
   useEffect(()=> {
     async function loadData() {
@@ -36,7 +55,11 @@ export const AppContextProvider = (props) => {
     auth,
     setAuthData,
     itemsData,
-    setItemsData
+    setItemsData,
+    addToCart,
+    cartItems,
+    removeFromCart,
+    updateQuantity
   }
 
   return  (
