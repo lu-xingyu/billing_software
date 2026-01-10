@@ -11,8 +11,6 @@ const DisplayItems = ({ selectedCategory }) => {
     if (!selectedCategory) return true;
     return item.categoryId === selectedCategory
   }).filter(item => item.name.toLowerCase().includes(searchText.toLowerCase()))
-    
-
 
   return (
     <div className="p-3">

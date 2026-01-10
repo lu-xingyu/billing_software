@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentDetails {
 
-    private String razorpayOrderId;
-    private String razorpayPaymentId;
-    private String razorpaySignature;
+    private String stripePaymentIntentId;
     private PaymentStatus status;
 
 

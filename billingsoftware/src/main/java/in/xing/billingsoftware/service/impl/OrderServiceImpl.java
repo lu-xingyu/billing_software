@@ -1,11 +1,16 @@
 package in.xing.billingsoftware.service.impl;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
 import in.xing.billingsoftware.entity.OrderEntity;
 import in.xing.billingsoftware.entity.OrderItemEntity;
 import in.xing.billingsoftware.io.*;
 import in.xing.billingsoftware.respository.OrderEntityRepository;
 import in.xing.billingsoftware.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Order;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +20,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderEntityRepository orderEntityRepository;
+    @Value("${stripe_secret_key}")
+    private String stripe_secret_key;
     
     @Override
-    public OrderResponse createdOrder(OrderRequest request) {
+    public OrderResponse createOrder(OrderRequest request) {
         OrderEntity newOrder =  convertToOrderEntity(request);
 
         PaymentDetails paymentDetails = new PaymentDetails();
@@ -93,5 +100,29 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponse verifyPayment(PaymentVerificationRequest request) {
+        OrderEntity existingOrder = orderEntityRepository.findByOrderId(request.getOrderId())
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        try {
+            Stripe.apiKey = stripe_secret_key;
+            PaymentIntent paymentIntent = PaymentIntent.retrieve(request.getStripePaymentIntentId());
+            if (!paymentIntent.getStatus().equals("succeed")) {
+                throw new RuntimeException("Payment verification failed");
+            }
+            PaymentDetails paymentDetails = existingOrder.getPaymentDetails();
+            paymentDetails.setStripePaymentIntentId(request.getStripePaymentIntentId());
+            paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
+
+            existingOrder = orderEntityRepository.save(existingOrder);
+            return convertToResponse(existingOrder);
+        } catch (StripeException e) {
+            throw new RuntimeException("Retrieve PaymentIntent failed");
+        }
+
+
     }
 }
