@@ -45,45 +45,4 @@ public class StripeServiceImpl implements StripeService {
                 .build();
     }
 
-
-    @Override
-    public StripeCheckoutSessionResponse createCheckoutSession(
-            Double amount,
-            String currency,
-            String orderId
-    ) throws StripeException {
-
-        Stripe.apiKey = stripe_secret_key;
-
-        SessionCreateParams params = SessionCreateParams.builder()
-            .setMode(SessionCreateParams.Mode.PAYMENT)
-            .setSuccessUrl("https://your-site/success?session_id={CHECKOUT_SESSION_ID}")
-            .setCancelUrl("https://your-site/cancel?orderId=" + orderId)
-            .addLineItem(
-                SessionCreateParams.LineItem.builder()
-                    .setQuantity(1L)
-                    .setPriceData(
-                        SessionCreateParams.LineItem.PriceData.builder()
-                            .setCurrency(currency.toLowerCase())
-                            .setUnitAmount(Math.round(amount * 100))
-                            .setProductData(
-                                SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                    .setName("Order " + orderId)
-                                    .build()
-                            )
-                            .build()
-                    )
-                    .build()
-            )
-            .putMetadata("orderId", orderId)
-            .build();
-
-        Session session = Session.create(params);
-
-        return new StripeCheckoutSessionResponse(
-                session.getId(),
-                session.getUrl()
-        );
-    }
-
 }

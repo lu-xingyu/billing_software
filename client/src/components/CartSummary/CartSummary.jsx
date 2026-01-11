@@ -4,27 +4,18 @@ import { AppContext } from "../../context/AppContext.jsx"
 import { toast } from 'react-hot-toast';
 import { createOrder, deleteOrder } from "../../services/OrderService.js"
 import { createStripePaymentIntent, verifyPayment } from "../../services/PaymentService.js"
-import { AppContants } from "../../util/constants.js"
+import { StripeModal } from "../Payment/StripeModal.jsx"
 
 const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNumber }) => {
   const { cartItems } = useContext(AppContext);
-  const [isProcessing, setIsProcessing] = useState(false)
+  const [clientSecret, setClientSecret] = useState("")
+  const [showCheckout, setShowCheckout] = useState(false)
   const [orderDetails, setOrderDetails] = useState(null);
+  const [orderId, setOrderId] = useState(null)
 
   const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   const tax = totalAmount * 0.01;
   const grandTotal = totalAmount + tax;
-
-  const loadStripeScript = () => {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = "https://js.stripe.com/v3/"
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    })
-  }
-
 
 
   const deleteOrderOnFailure = async (orderId) => {
@@ -47,8 +38,6 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       return;
     }
 
-    setIsProcessing(true);
-
     const orderData = {
       customerName,
       phoneNumber: mobileNumber,
@@ -62,73 +51,66 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
     try {
       const response = await createOrder(orderData);
       const savedData = response.data
-      if (response.status === 201 && paymentMode === 'cash') {
+      setOrderId(savedData.orderId)
+      if (response.status === 201 && paymentMode === 'CASH') {
         toast.success("Cash received")
         setOrderDetails(savedData)
-      } else if (response.status === 201 && paymentMode === 'bank transfer') {
-        const stripeLoaded = await loadStripeScript();
-        if (!stripeLoaded) {
-          toast.error("Unable to load Stripe");
-          await deleteOrderOnFailure(savedData.orderId);
-          return;
-        } 
-
-        const stripe = window.Stripe(AppContants.STRIPE_PUB_KEY);
-        const elements = stripe.elements();
-
-        const cardElement = elements.create("card", {
-          style: {
-            base: {
-              fontSize: "16px",
-              color: "#3399cc",
-              "::placeholder": { color: "#aab7c4" }
-            }
-          }
-        });
-
-        cardElement.mount("#card-element");
-
-        //create stripe payment intent
+      } else if (response.status === 201 && paymentMode === 'BANK_TRANSFER') {
         const stripeResponse = await createStripePaymentIntent({ amount: grandTotal, currency: 'EUR'})
-        await confirmStripePayment(stripeResponse.client_secret, savedData.orderId)
+        if (!stripeResponse.client_secret) {
+          deleteOrderOnFailure(orderId)
+          return
+        }
+        setClientSecret(stripeResponse.client_secret)
+        setShowCheckout(true)
+      } else {
+        toast.error("Create order failed")
       }
-
-
-    }catch(error) {
-
+    } catch(error) {
+      console.log(error)
+      toast.error("Server falied")
     }
   }
 
   return (
-    <div className="mt-2 j-100 overflow-y-auto">
-      <div className="cart-summary-details">
-        <div className="d-flex justify-content-between mb-2">
-          <span className="text-light">Item: </span>
-          <span className="text-light">&#8364;{ totalAmount.toFixed(2) }</span>
+    <>
+      <div className="mt-2 j-100 overflow-y-auto">
+        <div className="cart-summary-details">
+          <div className="d-flex justify-content-between mb-2">
+            <span className="text-light">Item: </span>
+            <span className="text-light">&#8364;{ totalAmount.toFixed(2) }</span>
+          </div>
+          <div className="d-flex justify-content-between mb-2">
+            <span className="text-light">Tax(1%): </span>
+            <span className="text-light">&#8364;{tax.toFixed(2)}</span>
+          </div>
+          <div className="d-flex justify-content-between mb-4">
+            <span className="text-light">Total: </span>
+            <span className="text-light">&#8364;{grandTotal.toFixed(2)}</span>
+          </div>
         </div>
-        <div className="d-flex justify-content-between mb-2">
-          <span className="text-light">Tax(1%): </span>
-          <span className="text-light">&#8364;{tax.toFixed(2)}</span>
+        <div className="d-flex gap-3">
+          <button className="btn btn-success flex-grow-1" onClick={() => completePayment("CASH")}>
+            Cash
+          </button>
+          <button className="btn btn-primary flex-grow-1" onClick={() => completePayment("BANK_TRANSFER")}>
+            Bank Transfer
+          </button>
         </div>
-        <div className="d-flex justify-content-between mb-4">
-          <span className="text-light">Total: </span>
-          <span className="text-light">&#8364;{grandTotal.toFixed(2)}</span>
+        <div className="d-flex gap-3 mt-3">
+          <button className="btn btn-warning flex-grow-1">
+            Place Order
+          </button>
         </div>
       </div>
-      <div className="d-flex gap-3">
-        <button className="btn btn-success flex-grow-1">
-          Cash
-        </button>
-        <button className="btn btn-primary flex-grow-1">
-          Bank Transfer
-        </button>
-      </div>
-      <div className="d-flex gap-3 mt-3">
-        <button className="btn btn-warning flex-grow-1">
-          Place Order
-        </button>
-      </div>
-    </div>
+      <StripeModal
+        showCheckout={showCheckout}
+        clientSecret={clientSecret}
+        closeWindow={() => setShowCheckout(false)}
+        deleteOrderOnFailure={() => deleteOrderOnFailure(orderId)}
+        orderId={orderId}
+      />  
+    </>
   )
 }
 

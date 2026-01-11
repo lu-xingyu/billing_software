@@ -102,6 +102,7 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
+    // TODO: change to webhook and update info automatically
     @Override
     public OrderResponse verifyPayment(PaymentVerificationRequest request) {
         OrderEntity existingOrder = orderEntityRepository.findByOrderId(request.getOrderId())
