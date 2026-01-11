@@ -28,25 +28,31 @@ export const AppContextProvider = (props) => {
     setCartItems(cartItems.map(item => item.itemId === itemId ? { ...item, quantity: newQuantity } : item))
   }
   
-
-  useEffect(()=> {
-    async function loadData() {
-      if(localStorage.getItem("token") && localStorage.getItem("role")) {
-        setAuthData(
-          localStorage.getItem("token"),
-          localStorage.getItem("role")
-        );
-      }
+  const loadData = async () => {
+    try {
       const response = await fetchCategories();
       const itemResponse = await fetchItems();
       setCategories(response.data);
       setItemsData(itemResponse.data);
+    } catch (e) {
+      console.error(e)
     }
-    loadData();
+  }
+
+  useEffect(()=> {
+    if(localStorage.getItem("token") && localStorage.getItem("role")) {
+      setAuthData(
+        localStorage.getItem("token"),
+        localStorage.getItem("role")
+      );
+    }
   }, [])
 
   const setAuthData = (token, role) => {
     setAuth({ token, role });
+    if (token) {
+      loadData()
+    }
   }
 
   const contextValue = {

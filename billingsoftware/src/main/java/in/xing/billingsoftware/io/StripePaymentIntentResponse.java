@@ -15,7 +15,7 @@ public class StripePaymentIntentResponse {
 
     private String id;
     private String entity;
-    private Integer amount;
+    private Long amount;
     private String currency;
     private String status;
     private Date created_at;

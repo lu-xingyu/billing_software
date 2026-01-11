@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             Stripe.apiKey = stripe_secret_key;
             PaymentIntent paymentIntent = PaymentIntent.retrieve(request.getStripePaymentIntentId());
-            if (!paymentIntent.getStatus().equals("succeed")) {
+            if (!paymentIntent.getStatus().equals("succeeded")) {
                 throw new RuntimeException("Payment verification failed");
             }
             PaymentDetails paymentDetails = existingOrder.getPaymentDetails();

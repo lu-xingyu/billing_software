@@ -43,7 +43,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       phoneNumber: mobileNumber,
       cartItems,
       tax,
-      subTotal: totalAmount,
+      subtotal: totalAmount,
       grandTotal,
       paymentMethod: paymentMode.toUpperCase()
     }
@@ -55,13 +55,14 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       if (response.status === 201 && paymentMode === 'CASH') {
         toast.success("Cash received")
         setOrderDetails(savedData)
-      } else if (response.status === 201 && paymentMode === 'BANK_TRANSFER') {
+      } else if (response.status === 201 && paymentMode === 'BANK') {
         const stripeResponse = await createStripePaymentIntent({ amount: grandTotal, currency: 'EUR'})
-        if (!stripeResponse.client_secret) {
+        console.log(stripeResponse)
+        if (!stripeResponse.data.client_secret) {
           deleteOrderOnFailure(orderId)
           return
         }
-        setClientSecret(stripeResponse.client_secret)
+        setClientSecret(stripeResponse.data.client_secret)
         setShowCheckout(true)
       } else {
         toast.error("Create order failed")
@@ -93,7 +94,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
           <button className="btn btn-success flex-grow-1" onClick={() => completePayment("CASH")}>
             Cash
           </button>
-          <button className="btn btn-primary flex-grow-1" onClick={() => completePayment("BANK_TRANSFER")}>
+          <button className="btn btn-primary flex-grow-1" onClick={() => completePayment("BANK")}>
             Bank Transfer
           </button>
         </div>
@@ -106,7 +107,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       <StripeModal
         showCheckout={showCheckout}
         clientSecret={clientSecret}
-        closeWindow={() => setShowCheckout(false)}
+        hideWindow={() => setShowCheckout(false)}
         deleteOrderOnFailure={() => deleteOrderOnFailure(orderId)}
         orderId={orderId}
       />  

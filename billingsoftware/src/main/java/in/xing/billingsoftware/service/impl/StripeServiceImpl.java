@@ -38,6 +38,7 @@ public class StripeServiceImpl implements StripeService {
                 .id(paymentIntent.getId())
                 .entity(paymentIntent.getObject())
                 .currency(paymentIntent.getCurrency())
+                .amount(paymentIntent.getAmount() / 100)
                 .status(paymentIntent.getStatus())
                 .created_at(new Date(paymentIntent.getCreated() * 1000))
                 .receipt(paymentIntent.getMetadata().get("receipt"))

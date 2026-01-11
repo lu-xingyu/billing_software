@@ -1,6 +1,6 @@
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from 'react-hot-toast';
 import { verifyPayment } from "../../services/PaymentService"
 
 export default function CheckoutForm({ clientSecret, hideWindow, orderId }) {
@@ -56,6 +56,7 @@ export default function CheckoutForm({ clientSecret, hideWindow, orderId }) {
               "::placeholder": { color: "#aab7c4" },
             },
           },
+          postalCode: true
         }}
       />
 

@@ -1,9 +1,8 @@
 import { Modal, Button } from "react-bootstrap";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import CheckoutForm from "./CheckoutForm.js";
+import CheckoutForm from "./CheckoutForm.jsx";
 import { AppContants } from "../../util/constants.js"
-
 
 
 const stripePromise = loadStripe(AppContants.STRIPE_PUB_KEY);
