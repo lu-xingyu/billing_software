@@ -3,11 +3,18 @@ import { useState } from "react";
 import { toast } from 'react-hot-toast';
 import { verifyPayment } from "../../services/PaymentService"
 
-export default function CheckoutForm({ clientSecret, hideWindow, orderId }) {
+// 4242 4242 4242 4242
+// 4000 0000 0000 0002
+
+export const CheckoutForm = ({ clientSecret, hideWindow, currentOrder, setClientSecret, setIsProcessing, setOrderDetails }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+
+  console.log("CheckoutForm setClientSecret:", setClientSecret);
+  console.log("CheckoutForm clientSecret:", clientSecret);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,12 +33,17 @@ export default function CheckoutForm({ clientSecret, hideWindow, orderId }) {
       setError(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       // TODO: change backend webhook and delete this
+      console.log(currentOrder)
       try {
         const response = await verifyPayment({
-          orderId,
+          orderId: currentOrder.orderId,
           stripePaymentIntentId: paymentIntent.id
         })
+        console.log("verifyPayment response:", response);
         if (response.status === 200) {
+          setOrderDetails(response.data);
+          setClientSecret("");
+          setIsProcessing(false);
           toast.success("Payment successful!");
           hideWindow();
         } else {
