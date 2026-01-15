@@ -158,3 +158,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iL
   "amount": 50.00,
   "currency": "eur"
 }
+
+
+### read dashboard data
+GET http://localhost:8080/api/v1.0/dashboard
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3Njg0ODYwNjQsImV4cCI6MTc2ODUyMjA2NH0.Cswd5_ZtcQfO65ffHewYqS7eLRYCUQDn_0E-SSkpLrM
+Content-Type: application/json

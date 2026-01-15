@@ -1,12 +1,13 @@
 import './Menubar.css'
 import { assets } from '../../assets/assets.js'
-import { Link, Links, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContext } from 'react';
 import { AppContext } from "../../context/AppContext.jsx"
 
 const Menubar = () => {
   const navigate = useNavigate();
-  const { setAuthData } = useContext(AppContext)
+  const location = useLocation();
+  const { auth, setAuthData } = useContext(AppContext)
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -14,6 +15,13 @@ const Menubar = () => {
     setAuthData(null, null);
     navigate("/login")
   }
+
+  const isAdmin = auth.role === "ROLE_ADMIN"
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  }
+ 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-2">
       <a className="navbar-brand" href="#">
@@ -25,19 +33,28 @@ const Menubar = () => {
       <div className="collapse navbar-collapse p-2" id="navbarNav">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
-            <Link className="nav-link" to="/dashboard">Dashboard</Link>
+            <Link className={`nav-link ${isActive('/dashboard') ?  'fw-bold text-warning' : ''}`} to="/dashboard">Dashboard</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/explore">Explore</Link>
+            <Link className={`nav-link ${isActive('/explore') ?  'fw-bold text-warning' : ''}`} to="/explore">Explore</Link>
           </li>
+          {
+            isAdmin && (
+              <>
+                <li className="nav-item">
+                  <Link className={`nav-link ${isActive('/items') ?  'fw-bold text-warning' : ''}`} to="/items">Manage Items</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className={`nav-link ${isActive('/category') ?  'fw-bold text-warning' : ''}`} to="/category">Manage Category</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className={`nav-link ${isActive('/users') ?  'fw-bold text-warning' : ''}`} to="/users">Manage Users</Link>
+                </li>
+              </>
+            )
+          }
           <li className="nav-item">
-            <Link className="nav-link" to="/items">Manage Items</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/category">Manage Category</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/users">Manage Users</Link>
+            <Link className={`nav-link ${isActive('/orders') ?  'fw-bold text-warning' : ''}`} to="/orders">Order History</Link>
           </li>
         </ul>
         {/*Add the dropdown for userprofile*/}

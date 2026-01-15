@@ -11,8 +11,11 @@ import in.xing.billingsoftware.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
             Stripe.apiKey = stripe_secret_key;
             PaymentIntent paymentIntent = PaymentIntent.retrieve(request.getStripePaymentIntentId());
             if (!paymentIntent.getStatus().equals("succeeded")) {
-                throw new RuntimeException("Payment verification failed");
+                throw new RuntimeException("Payment verification failed"); // why not set payment status to pending
             }
             PaymentDetails paymentDetails = existingOrder.getPaymentDetails();
             paymentDetails.setStripePaymentIntentId(request.getStripePaymentIntentId());
@@ -125,5 +128,23 @@ public class OrderServiceImpl implements OrderService {
         }
 
 
+    }
+
+    @Override
+    public Double sumSalesByDate(LocalDate date) {
+        return orderEntityRepository.sumSalesByDate(date);
+    }
+
+    @Override
+    public Long countByOrderDate(LocalDate date) {
+        return orderEntityRepository.countByOrderDate(date);
+    }
+
+    @Override
+    public List<OrderResponse> findRecentOrders() {
+        return orderEntityRepository.findRecentOrders(PageRequest.of(0, 5))
+                .stream()
+                .map(orderEntity -> convertToResponse(orderEntity))
+                .collect(Collectors.toList());
     }
 }
