@@ -21,7 +21,7 @@ public class PaymentController {
     @PostMapping("payment-intent")
     @ResponseStatus(HttpStatus.CREATED)
     public StripePaymentIntentResponse createStripeOrder(@RequestBody PaymentRequest request) throws StripeException {
-        return stripeService.createPaymentIntent((request.getAmount()), request.getCurrency());
+        return stripeService.createPaymentIntent(request.getOrderId(), request.getAmount(), request.getCurrency());
     }
 
 

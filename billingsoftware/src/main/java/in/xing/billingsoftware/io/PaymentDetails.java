@@ -2,6 +2,8 @@ package in.xing.billingsoftware.io;
 
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class PaymentDetails {
 
     private String stripePaymentIntentId;
+    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
 

@@ -21,4 +21,5 @@ public class StripePaymentIntentResponse {
     private Date created_at;
     private String receipt;
     private String client_secret;
+    private String orderId;
 }

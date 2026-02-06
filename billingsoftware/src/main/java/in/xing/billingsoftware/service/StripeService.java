@@ -5,5 +5,5 @@ import in.xing.billingsoftware.io.StripePaymentIntentResponse;
 
 public interface StripeService {
 
-    StripePaymentIntentResponse createPaymentIntent(Double amount, String currency) throws StripeException;
+    StripePaymentIntentResponse createPaymentIntent(String orderId, Double amount, String currency) throws StripeException;
 }

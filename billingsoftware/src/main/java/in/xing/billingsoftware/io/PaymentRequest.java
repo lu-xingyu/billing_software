@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentRequest {
 
+    private String orderId;
     private Double amount;
     private String currency;
 }
