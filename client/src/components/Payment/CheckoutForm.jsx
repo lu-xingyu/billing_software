@@ -32,8 +32,15 @@ export const CheckoutForm = ({ clientSecret, hideWindow, currentOrder, setClient
     if (error) {
       setError(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
+        setOrderDetails(response.data);
+        setClientSecret("");
+        setIsProcessing(false);
+        setLoading(false);
+        toast.success("Payment successful!");
+        hideWindow();
       // TODO: change backend webhook and delete this
       console.log(currentOrder)
+      /*
       try {
         const response = await verifyPayment({
           orderId: currentOrder.orderId,
@@ -52,9 +59,10 @@ export const CheckoutForm = ({ clientSecret, hideWindow, currentOrder, setClient
       } catch (e) {
         setError("Verify payment from sever failed")
       }
+      */
     }
 
-    setLoading(false);
+    
   };
 
   return (

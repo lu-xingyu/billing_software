@@ -23,11 +23,10 @@ public class WebhookController {
     private static final Logger log = LoggerFactory.getLogger(WebhookController.class);
     @Value("${stripe.webhook.secret}")
     private String webhook_secret;
-    private WebhookService webhookService;
+    private final WebhookService webhookService;
 
     @PostMapping("/webhook")
     public ResponseEntity handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
-        log.info("Webhook called! Payload: {}", payload);
         Event event;
         try {
             event = Webhook.constructEvent(payload, sigHeader, webhook_secret);
@@ -45,9 +44,9 @@ public class WebhookController {
         try {
             webhookService.handleEvent(event, stripeObject);
             return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            log.info("Service error {}", e);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
-
     }
 }

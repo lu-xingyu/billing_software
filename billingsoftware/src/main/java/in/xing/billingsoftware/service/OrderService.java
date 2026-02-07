@@ -14,6 +14,8 @@ public interface OrderService {
 
     void deleteOrder(String orderId);
 
+    OrderResponse getOrder(String orderId);
+
     List<OrderResponse> getLastedOrders();
 
     OrderResponse verifyPayment(PaymentVerificationRequest request);

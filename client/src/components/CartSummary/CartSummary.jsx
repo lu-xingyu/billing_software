@@ -4,14 +4,14 @@ import { AppContext } from "../../context/AppContext.jsx"
 import { toast } from 'react-hot-toast';
 import { createOrder, deleteOrder } from "../../services/OrderService.js"
 import { createStripePaymentIntent, verifyPayment } from "../../services/PaymentService.js"
-import { StripeModal } from "../Payment/StripeModal.jsx"
+import WaitPayment from "../Payment/WaitPayment.jsx"
 import { ReceiptPopup } from "../ReceiptPopup/ReceiptPopup.jsx"
 
 const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNumber }) => {
   const { clearCart, cartItems } = useContext(AppContext);
-  const [clientSecret, setClientSecret] = useState("")
   const [showCheckout, setShowCheckout] = useState(false)
-  const [orderDetails, setOrderDetails] = useState(null);
+  const [paymentIntentId, setPaymentIntentId] = useState(null)
+  const [paymentStatus, setPaymentStatus] = useState("pending")
   const [currentOrder, setCurrentOrder] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false)
@@ -79,14 +79,10 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
         setOrderDetails(savedData)
         setIsProcessing(false)
       } else if (response.status === 201 && paymentMode === 'BANK') {
-        const stripeResponse = await createStripePaymentIntent({ amount: grandTotal, currency: 'EUR'})
+        const stripeResponse = await createStripePaymentIntent({ orderId: savedData.orderId, amount: grandTotal, currency: 'EUR'})
         console.log(stripeResponse)
-        if (!stripeResponse.data.client_secret) {
-          deleteOrderOnFailure(orderId)
-          return
-        }
-        setClientSecret(stripeResponse.data.client_secret)
         setShowCheckout(true)
+        setPaymentIntentId(stripeResponse.data.id)
       } else {
         toast.error("Create order failed")
       }
@@ -122,11 +118,14 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
           </button>
         </div>
         <div className="d-flex gap-3 mt-3">
-          <button className="btn btn-warning flex-grow-1" onClick={placeOrder} disabled={isProcessing || !orderDetails}>
+          <button className="btn btn-warning flex-grow-1" onClick={placeOrder} disabled={isProcessing || !paymentStatus === "succeeded"}>
             Place Order
           </button>
         </div>
       </div>
+
+
+      {/*
       <StripeModal
         showCheckout={showCheckout}
         clientSecret={clientSecret}
@@ -136,11 +135,25 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
         setOrderDetails={setOrderDetails}
         setClientSecret={setClientSecret}
         setIsProcessing={setIsProcessing}
-      />  
+      />  */}
+
+
+      
+      {currentOrder && (
+        <WaitPayment
+          orderId={currentOrder.id}
+          showCheckout={showCheckout}
+          setShowCheckout = {setShowCheckout}
+          deleteOrderOnFailure={() => deleteOrderOnFailure(currentOrder.orderId)}
+          setIsProcessing={setIsProcessing}
+          paymentStatus={paymentStatus}
+          setPaymentStatus={setPaymentStatus}
+        /> )
+      }
       {
         showPopup && (
         <ReceiptPopup 
-          orderDetails={{...orderDetails, stripePaymentId: orderDetails.paymentDetails?.stripePaymentIntentId}} 
+          orderDetails={{...orderDetails, stripePaymentId: paymentIntentId}} 
           onClose={() => setShowPopup(false)}
           onPrint={handlePrintReceipt}
         />)

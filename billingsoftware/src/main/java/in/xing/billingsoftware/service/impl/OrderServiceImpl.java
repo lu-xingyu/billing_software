@@ -98,6 +98,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderResponse getOrder(String orderId) {
+        OrderEntity orderFound = orderEntityRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        return convertToResponse(orderFound);
+    }
+
+    @Override
     public List<OrderResponse> getLastedOrders() {
         return orderEntityRepository.findAllByOrderByCreatedAtDesc()
                 .stream()

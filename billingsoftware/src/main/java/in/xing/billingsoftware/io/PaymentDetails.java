@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 public class PaymentDetails {
 
     private String stripePaymentIntentId;
-    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
 
