@@ -3,18 +3,24 @@ import { useContext, useState } from 'react'
 import { AppContext } from "../../context/AppContext.jsx"
 import { toast } from 'react-hot-toast';
 import { createOrder, deleteOrder } from "../../services/OrderService.js"
-import { createStripePaymentIntent, verifyPayment } from "../../services/PaymentService.js"
+import { createStripePaymentIntent } from "../../services/PaymentService.js"
 import WaitPayment from "../Payment/WaitPayment.jsx"
 import { ReceiptPopup } from "../ReceiptPopup/ReceiptPopup.jsx"
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { AppContants } from "../../util/constants.js"
 
+const stripePromise = loadStripe(AppContants.STRIPE_PUB_KEY);
 const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNumber }) => {
+
+
   const { clearCart, cartItems } = useContext(AppContext);
   const [showCheckout, setShowCheckout] = useState(false)
-  const [paymentIntentId, setPaymentIntentId] = useState(null)
-  const [paymentStatus, setPaymentStatus] = useState("pending")
+  const [paymentStatus, setPaymentStatus] = useState(null)
   const [currentOrder, setCurrentOrder] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false)
+  const [clientSecret, setClientSecret] = useState(null)
 
   const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   const totalAmount = Number(total.toFixed(2))
@@ -24,9 +30,9 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
   const clearAll = () => {
     setCustomerName("");
     setMobileNumber("");
+    setPaymentStatus(null)
+    setClientSecret(null)
     clearCart();
-    setCurrentOrder(null);
-
   }
 
   const placeOrder = () => {
@@ -76,13 +82,11 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       setCurrentOrder(savedData)
       if (response.status === 201 && paymentMode === 'CASH') {
         toast.success("Cash received")
-        setOrderDetails(savedData)
-        setIsProcessing(false)
       } else if (response.status === 201 && paymentMode === 'BANK') {
         const stripeResponse = await createStripePaymentIntent({ orderId: savedData.orderId, amount: grandTotal, currency: 'EUR'})
-        console.log(stripeResponse)
         setShowCheckout(true)
-        setPaymentIntentId(stripeResponse.data.id)
+        setClientSecret(stripeResponse.data.client_secret)
+        setPaymentStatus("pending")
       } else {
         toast.error("Create order failed")
       }
@@ -90,6 +94,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       console.log(error)
       toast.error("Server falied")
     }
+    setIsProcessing(false)
   }
 
   return (
@@ -110,10 +115,10 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
           </div>
         </div>
         <div className="d-flex gap-3">
-          <button className="btn btn-success flex-grow-1" onClick={() => completePayment("CASH")} disabled={isProcessing}>
+          <button className="btn btn-success flex-grow-1" onClick={() => completePayment("CASH")} disabled={isProcessing || paymentStatus === "succeeded"}>
             {isProcessing ? "Processing" : "Cash"}
           </button>
-          <button className="btn btn-primary flex-grow-1" onClick={() => completePayment("BANK")} disabled={isProcessing}>
+          <button className="btn btn-primary flex-grow-1" onClick={() => completePayment("BANK")} disabled={isProcessing || paymentStatus === "succeeded"}>
             {isProcessing ? "Processing" : "Bank Transfer"}
           </button>
         </div>
@@ -124,36 +129,24 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
         </div>
       </div>
 
-
-      {/*
-      <StripeModal
-        showCheckout={showCheckout}
-        clientSecret={clientSecret}
-        hideWindow={() => setShowCheckout(false)}
-        deleteOrderOnFailure={() => deleteOrderOnFailure(currentOrder.orderId)}
-        currentOrder={currentOrder}
-        setOrderDetails={setOrderDetails}
-        setClientSecret={setClientSecret}
-        setIsProcessing={setIsProcessing}
-      />  */}
-
-
-      
-      {currentOrder && (
-        <WaitPayment
-          orderId={currentOrder.id}
-          showCheckout={showCheckout}
-          setShowCheckout = {setShowCheckout}
-          deleteOrderOnFailure={() => deleteOrderOnFailure(currentOrder.orderId)}
-          setIsProcessing={setIsProcessing}
-          paymentStatus={paymentStatus}
-          setPaymentStatus={setPaymentStatus}
-        /> )
+      {currentOrder  && clientSecret && (
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <WaitPayment
+            orderId={currentOrder.orderId}
+            setCurrentOrder={setCurrentOrder}
+            showCheckout={showCheckout}
+            setShowCheckout = {setShowCheckout}
+            deleteOrderOnFailure={() => deleteOrderOnFailure(currentOrder.orderId)}
+            paymentStatus={paymentStatus}
+            setPaymentStatus={setPaymentStatus}
+            clientSecret={clientSecret}
+          /> 
+        </Elements>)
       }
       {
-        showPopup && (
+        showPopup && currentOrder && (
         <ReceiptPopup 
-          orderDetails={{...orderDetails, stripePaymentId: paymentIntentId}} 
+          orderDetails={{...currentOrder, stripePaymentId: currentOrder.paymentDetails.stripePaymentIntentId}} 
           onClose={() => setShowPopup(false)}
           onPrint={handlePrintReceipt}
         />)

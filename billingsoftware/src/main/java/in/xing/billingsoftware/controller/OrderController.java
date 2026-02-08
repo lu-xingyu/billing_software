@@ -33,4 +33,10 @@ public class OrderController {
     public List<OrderResponse> getLatestOrders() {
         return orderService.getLastedOrders();
     }
+
+
+    @GetMapping("/{orderId}")
+    public OrderResponse getOrder(@PathVariable String orderId) {
+        return orderService.getOrder(orderId);
+    }
 }

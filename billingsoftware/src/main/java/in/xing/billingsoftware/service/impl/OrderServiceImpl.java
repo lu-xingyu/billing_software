@@ -112,31 +112,6 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    // TODO: change to webhook and update info automatically
-    @Override
-    public OrderResponse verifyPayment(PaymentVerificationRequest request) {
-        OrderEntity existingOrder = orderEntityRepository.findByOrderId(request.getOrderId())
-                .orElseThrow(() -> new RuntimeException("Order not found"));
-
-        try {
-            Stripe.apiKey = stripe_secret_key;
-            PaymentIntent paymentIntent = PaymentIntent.retrieve(request.getStripePaymentIntentId());
-            if (!paymentIntent.getStatus().equals("succeeded")) {
-                throw new RuntimeException("Payment verification failed"); // why not set payment status to pending
-            }
-            PaymentDetails paymentDetails = existingOrder.getPaymentDetails();
-            paymentDetails.setStripePaymentIntentId(request.getStripePaymentIntentId());
-            paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
-
-            existingOrder = orderEntityRepository.save(existingOrder);
-            return convertToResponse(existingOrder);
-        } catch (StripeException e) {
-            throw new RuntimeException("Retrieve PaymentIntent failed");
-        }
-
-
-    }
-
     @Override
     public Double sumSalesByDate(LocalDate date) {
         return orderEntityRepository.sumSalesByDate(date);

@@ -18,8 +18,6 @@ public interface OrderService {
 
     List<OrderResponse> getLastedOrders();
 
-    OrderResponse verifyPayment(PaymentVerificationRequest request);
-
     Double sumSalesByDate(LocalDate date);
 
     Long countByOrderDate(LocalDate date);

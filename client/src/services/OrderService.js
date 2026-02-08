@@ -9,7 +9,7 @@ export const createOrder = async (order) => {
 }
 
 export const getOrder = async (id) => {
-    return await axios.post(`http://localhost:8080/api/v1.0/orders/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}})
+    return await axios.get(`http://localhost:8080/api/v1.0/orders/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}})
 }
 
 export const deleteOrder = async (id) => {

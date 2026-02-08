@@ -16,17 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PaymentController {
     private final StripeService stripeService;
-    private final OrderService orderService;
 
     @PostMapping("/payment-intent")
     @ResponseStatus(HttpStatus.CREATED)
     public StripePaymentIntentResponse createStripeOrder(@RequestBody PaymentRequest request) throws StripeException {
         return stripeService.createPaymentIntent(request.getOrderId(), request.getAmount(), request.getCurrency());
-    }
-
-
-    @PostMapping("/verify")
-    public OrderResponse verifyPayment(@RequestBody PaymentVerificationRequest request) {
-        return orderService.verifyPayment(request);
     }
 }

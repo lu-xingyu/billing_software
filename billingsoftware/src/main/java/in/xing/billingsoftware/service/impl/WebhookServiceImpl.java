@@ -27,7 +27,7 @@ public class WebhookServiceImpl implements WebhookService {
             case "payment_intent.succeeded":
                 updateOrder(stripeObject, PaymentDetails.PaymentStatus.COMPLETED);
                 break;
-            case "payment_intent.failed":
+            case "payment_intent.payment_failed":
                 updateOrder(stripeObject, PaymentDetails.PaymentStatus.FAILED);
                 break;
         }
