@@ -15,7 +15,7 @@ const Explore = () => {
   const [mobileNumber, setMobileNumber] = useState("");
 
   return (
-    <div className="explore-container text-light">
+    <div className="explore-container text-dark">
       <div className="left-column">
         <div className="first-row" style={{overflowY: 'auto'}}>
           <DisplayCategory
@@ -32,7 +32,7 @@ const Explore = () => {
         <div className="customer-form-container" style={{height: '15%', overflowY: 'auto'}}>
           <CustomerForm customerName={customerName} mobileNumber={mobileNumber} setCustomerName={setCustomerName} setMobileNumber={setMobileNumber} />
         </div>
-        <hr className="my-3 text-light" />
+        <hr className="horizontal-line" />
         <div className="cart-items-container" style={{height: '55%', overflowY: 'auto'}}>
           <CartItems />
         </div>

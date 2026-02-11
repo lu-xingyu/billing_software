@@ -102,23 +102,23 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
       <div className="mt-2 j-100 overflow-y-auto">
         <div className="cart-summary-details">
           <div className="d-flex justify-content-between mb-2">
-            <span className="text-light">Item: </span>
-            <span className="text-light">&#8364;{ totalAmount.toFixed(2) }</span>
+            <span className="text-dark">Item: </span>
+            <span className="text-dark">&#8364;{ totalAmount.toFixed(2) }</span>
           </div>
           <div className="d-flex justify-content-between mb-2">
-            <span className="text-light">Tax(1%): </span>
-            <span className="text-light">&#8364;{tax.toFixed(2)}</span>
+            <span className="text-dark">Tax(1%): </span>
+            <span className="text-dark">&#8364;{tax.toFixed(2)}</span>
           </div>
           <div className="d-flex justify-content-between mb-4">
-            <span className="text-light">Total: </span>
-            <span className="text-light">&#8364;{grandTotal.toFixed(2)}</span>
+            <span className="text-dark">Total: </span>
+            <span className="text-dark">&#8364;{grandTotal.toFixed(2)}</span>
           </div>
         </div>
         <div className="d-flex gap-3">
-          <button className="btn btn-success flex-grow-1" onClick={() => completePayment("CASH")} disabled={isProcessing || paymentStatus === "succeeded"}>
+          <button className="btn btn-primary flex-grow-1" onClick={() => completePayment("CASH")} disabled={isProcessing || paymentStatus === "succeeded"}>
             {isProcessing ? "Processing" : "Cash"}
           </button>
-          <button className="btn btn-primary flex-grow-1" onClick={() => completePayment("BANK")} disabled={isProcessing || paymentStatus === "succeeded"}>
+          <button className="btn btn-success flex-grow-1" onClick={() => completePayment("BANK")} disabled={isProcessing || paymentStatus === "succeeded"}>
             {isProcessing ? "Processing" : "Bank Transfer"}
           </button>
         </div>

@@ -10,3 +10,9 @@
   border-radius: 10px;
   border: 3px solid white;
 }
+
+.item-card {
+  background-color: #F3F9F6; 
+  border: 1px solid #D9EDE6; 
+
+}

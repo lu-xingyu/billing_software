@@ -42,11 +42,11 @@ const UsersList = ({ users, setUsers}) => {
         {
           filteredUsers.map((user, index) => (
             <div key={index} className="col-12">
-              <div className="card p-3 bg-dark">
+              <div className="card p-3 bg-light">
                 <div className="d-flex align-items-center">
                   <div className="flex-grow-1">
-                    <h5 className="mb-1 text-white">{user.name}</h5>
-                    <p className="mb-0 text-white">{user.email}</p>
+                    <h5 className="mb-1 text-dark">{user.name}</h5>
+                    <p className="mb-0 text-dark">{user.email}</p>
                   </div>
                   <button className="btn btn-danger btn-sm" onClick={() => deleteByUserId(user.userId)}>
                     <i className="bi bi-trash"></i>

@@ -13,12 +13,10 @@ body, html {
 .dashboard-container {
   flex: 1;
   padding: 20px;
-  background-color: #212529;
-  color: #e9ecef;
+  background-color: #FCFCFC;
 }
 
 .dashboard-title {
-  color: #f8f9fa;
   margin-bottom: 30px;
   font-weight: 600;
   border-bottom: 2px solid #495057;
@@ -33,7 +31,7 @@ body, html {
 }
 
 .stat-card {
-  background: #343a40;
+  background: #F5F5F5 ;
   border-radius: 10px;
   padding: 20px;
   display: flex;
@@ -49,7 +47,7 @@ body, html {
 .stat-icon {
   font-size: 2rem;
   margin-right: 20px;
-  color: #20c997;
+  color: #00704A;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -61,7 +59,7 @@ body, html {
 
 .stat-content h3 {
   margin: 0 0 5px 0;
-  color: #adb5bd;
+  color: #1A1A1A;
   font-size: 1rem;
 }
 
@@ -69,18 +67,18 @@ body, html {
   margin: 0;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #f8f9fa;
+  color: #333;
 }
 
 .recent-orders-card {
-  background: #343a40;
+  background: #F5F5F5 ;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .recent-orders-title {
-  color: #f8f9fa;
+  color: #1A1A1A;
   margin-top: 0;
   display: flex;
   align-items: center;
@@ -88,8 +86,10 @@ body, html {
 }
 
 .orders-table-container {
+  max-height: calc(100vh - 300px);
   overflow-x: auto;
   overflow-y: auto;
+  display: flex;  
 }
 
 .orders-table {
@@ -99,8 +99,8 @@ body, html {
 }
 
 .orders-table th {
-  background-color: #495057;
-  color: #f8f9fa;
+  background-color: #EFEFEF;
+  color: #333;
   padding: 12px 15px;
   text-align: left;
   font-weight: 600;
@@ -108,8 +108,8 @@ body, html {
 
 .orders-table td {
   padding: 12px 15px;
-  border-bottom: 1px solid #495057;
-  color: #e9ecef;
+  border-bottom: 1px solid #E0E0E0;
+  color: #333;
 }
 
 .order-table tr:hover {

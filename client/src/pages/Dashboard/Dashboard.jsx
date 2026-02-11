@@ -53,7 +53,7 @@ const Dashboard = () => {
         </div>
         <div className="recent-orders-card">
           <h3 className="recent-orders-title">
-            <i className="bi bi-clock-history"></i>
+            <i className="bi bi-clock-history" style={{ color: '#00704A' }}></i>
             Recent Orders
           </h3>
           <div className="orders-table-container">

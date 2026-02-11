@@ -52,14 +52,14 @@ const ItemList = () => {
       <div className="row g-3 pe-2">
         {filteredItems.map((item, index) => (
           <div className="col-12" key={index}>
-            <div className="card p-3 bg-dark">
+            <div className="card p-3 bg-light">
               <div className="d-flex align-items-center">
                 <div style={{marginRight: '15px'}}>
                   <img className="item-image" src={item.imgUrl} alt={item.name}/>
                 </div>
                 <div className="flex-grow-1">
-                  <h6 className="mb-1 text-white">{item.name}</h6>
-                  <p className="mb-0 text-white">
+                  <h6 className="mb-1 text-dark">{item.name}</h6>
+                  <p className="mb-0 text-dark">
                     Category: {item.categoryName}
                   </p>
                   <span className="mb-0 text-block badge rounded-pill text-bg-warning">

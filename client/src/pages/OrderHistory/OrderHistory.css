@@ -2,7 +2,7 @@
   padding: 20px;
   height: calc(100vh - 5rem);
   box-sizing: border-box;
-  background-color: #2c3335
+  background-color: #FCFCFC
 }
 
 .orders-history-container h2 {
@@ -20,9 +20,9 @@
 
 .table th {
   font-weight: 600;
-  position: sticky;      /* 粘性定位 */
+  position: sticky;    
   top: 0;
-
+  background-color: #D9EDE6 !important;
 }
 
 .table td {
