@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { login } from '../../services/AuthService.js';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from "../../context/AppContext.jsx"
+import { LuCoffee } from "react-icons/lu";
 
 
 const Login = () => {
@@ -44,15 +45,15 @@ const Login = () => {
 
 
   return (
-    <div className="bg-light d-flex align-items-center justify-content-center vh-100 login-background">
-      <div className="card shadow-log w-100" style={{maxWidth: '480px'}}>
+    <div className="bg-light d-flex flex-column align-items-center justify-content-center vh-100 login-background" style={{ transform: 'translateY(-10%)' }}>
+      <LuCoffee size={80} color="#00704A" className="me-2 mb-3" />
+      <div className="login-card shadow-log w-100" style={{maxWidth: '480px'}}>
         <div className="card-body">
           <div className="text-center">
             <div className="text-center">
-              <h1 className="card-title">Sign in</h1>
-              <p className="card-text text-muted">
+              <h4 className="card-text text-muted">
                 Sign in below to access your account
-              </p>
+              </h4>
             </div>
             <div className="mt-4">
               <form onSubmit={onSubmitHandler}>

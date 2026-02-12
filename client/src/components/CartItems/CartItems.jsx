@@ -13,7 +13,7 @@ const CartItems = () => {
         ) : (
           <div className="cart-items-list">
             {cartItems.map((item, index) => (
-              <div key={index} className="cart-item mb-3 p-3 rounded item-card ">
+              <div key={index} className="cart-item mb-3 p-3 rounded cart-item-card ">
                 <div className="d-flex justify-content-between align-items-center mb-2">
                   <h6 className="mb-0 text-dark">{item.name}</h6>
                   <p className="mb-0 text-dark">

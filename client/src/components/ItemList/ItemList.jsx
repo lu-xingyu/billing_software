@@ -52,7 +52,7 @@ const ItemList = () => {
       <div className="row g-3 pe-2">
         {filteredItems.map((item, index) => (
           <div className="col-12" key={index}>
-            <div className="card p-3 bg-light">
+            <div className="list-item-card p-3">
               <div className="d-flex align-items-center">
                 <div style={{marginRight: '15px'}}>
                   <img className="item-image" src={item.imgUrl} alt={item.name}/>

@@ -3,6 +3,7 @@ import { AppContext } from "../../context/AppContext.jsx"
 import { useContext, useState } from 'react';
 import { addItem } from "../../services/ItemService.js"
 import { toast } from 'react-hot-toast';
+import './ItemForm.css'
 
 
 const ItemForm = () => {
@@ -60,9 +61,9 @@ const ItemForm = () => {
 
   return (
     <div className="item-form-container" style={{height:'100vh', overflowY:'auto', overflowX: 'hidden'}}>
-      <div className="mx-2 mt-2 container">
+      <div className="py-2 px-4 container">
         <div className="row">
-          <div className="card col-md-12 form-container">
+          <div className="card form-container">
             <div className="card-body">
               <form onSubmit={onSubmitHandler}>
                 <div className="mb-3">

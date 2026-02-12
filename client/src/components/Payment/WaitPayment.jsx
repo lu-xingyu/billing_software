@@ -67,11 +67,11 @@ const WaitPayment = ({ orderId, setCurrentOrder, showCheckout, setShowCheckout, 
       backdrop="static"
       centered
     >
-      <Modal.Header closeButton>Wait Payment</Modal.Header>
+      <Modal.Header closeButton>Confirm Payment</Modal.Header>
       <Modal.Body>
         <div>
           {paymentStatus === "pending" && (
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center mb-3">
               <div className="spinner-border text-primary me-2" role="status"></div>
               <span>Waiting for payment...</span>
             </div>
@@ -82,6 +82,12 @@ const WaitPayment = ({ orderId, setCurrentOrder, showCheckout, setShowCheckout, 
               <p>Payment failed</p>
             </div>
           )}
+        </div>
+        <div className="d-flex align-items-start text-secondary mb-3">
+          <i className="bi bi-info-circle me-2"></i>
+          <p className="mb-0">
+            In real-world scenarios, customers usually tap their card on a Stripe terminal. Since I don't have access to a physical terminal, I simulate this by allowing customers to enter their card information manually.
+          </p>
         </div>
         <form onSubmit={handleSubmit}>
           <CardElement
@@ -109,3 +115,9 @@ const WaitPayment = ({ orderId, setCurrentOrder, showCheckout, setShowCheckout, 
 }
 
 export default WaitPayment;
+
+
+/* Test card
+4242 4242 4242 4242
+4000 0000 0000 9995
+*/

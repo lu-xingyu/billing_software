@@ -1,12 +1,23 @@
 import './Dashboard.css'
 import { useState, useEffect } from "react";
 import { fetchDashboardData } from "../../services/DashboardService"
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-hot-toast';
+import { useContext } from 'react';
+import { AppContext } from "../../context/AppContext.jsx"
 
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { auth } = useContext(AppContext)
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!auth.token) {
+      navigate("/login");
+      return; 
+    }
+
     const loadData = async () => {
       try {
         const response = await fetchDashboardData();
@@ -19,7 +30,9 @@ const Dashboard = () => {
       }
     }
     loadData()
-  }, [])
+  }, [auth, navigate])
+
+  if (!auth.token) return null; 
 
   if (loading) {
     return <div className="loading">Loading dashboard...</div>;
@@ -28,6 +41,7 @@ const Dashboard = () => {
   if (!data) {
     return <div className="loading">Failed to load the dashboard data...</div>;
   }
+
   return (
     <div className="dashboard-wrapper">
       <div className="dashboard-container">

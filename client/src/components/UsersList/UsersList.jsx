@@ -1,6 +1,7 @@
 import { deleteUser } from '../../services/UserService'
 import toast from "react-hot-toast";
 import { useState } from 'react';
+import './UserList.css'
 
 
 const UsersList = ({ users, setUsers}) => {
@@ -42,7 +43,7 @@ const UsersList = ({ users, setUsers}) => {
         {
           filteredUsers.map((user, index) => (
             <div key={index} className="col-12">
-              <div className="card p-3 bg-light">
+              <div className="user-card p-3">
                 <div className="d-flex align-items-center">
                   <div className="flex-grow-1">
                     <h5 className="mb-1 text-dark">{user.name}</h5>

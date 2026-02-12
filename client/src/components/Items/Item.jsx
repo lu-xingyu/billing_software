@@ -16,7 +16,7 @@ const Item = ({ itemName, itemPrice, itemImage, itemId}) => {
   }
 
   return (
-    <div className="p-3 rounded shadow-sm h-100 d-flex align-items-center item-card">
+    <div className="p-3 rounded shadow-sm h-100 d-flex align-items-center display-item-card">
       <div style={{position: "relative", marginRight: "15px" }}>
         <img src={itemImage} alt={itemName} className="item-image" />
       </div>

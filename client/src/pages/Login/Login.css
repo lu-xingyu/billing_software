@@ -3,20 +3,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.5),
-    rgba(255, 255, 255, 0.5)
-  ), url("../../assets/login-bg.png");
+  background-color: #EFEFEF;
   background-size: cover;
   background-position: center
 }
 
-.card {
+.login-card {
   background-color: white;
   width: 100%;
   max-width: 480px;
   border: none;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border: 1px solid #D9D9D9;
+  border-radius: 12px;        
 }
 
 .card-body {

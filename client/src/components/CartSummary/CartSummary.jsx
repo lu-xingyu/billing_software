@@ -119,7 +119,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
             {isProcessing ? "Processing" : "Cash"}
           </button>
           <button className="btn btn-success flex-grow-1" onClick={() => completePayment("BANK")} disabled={isProcessing || paymentStatus === "succeeded"}>
-            {isProcessing ? "Processing" : "Bank Transfer"}
+            {isProcessing ? "Processing" : "Card"}
           </button>
         </div>
         <div className="d-flex gap-3 mt-3">
