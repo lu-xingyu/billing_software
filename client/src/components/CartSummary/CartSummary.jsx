@@ -55,7 +55,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
 
   const completePayment = async (paymentMode) => {
     setIsProcessing(true);
-    if (!customerName || !mobileNumber) {
+    if (!customerName) {
       toast.error("Please enter customer details");
       setIsProcessing(false)
       return;

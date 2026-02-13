@@ -10,7 +10,7 @@ export const addCategory = async (category) => {
 
 export const deleteCategory = async(categoryId) => {
   return await axios.delete(
-    `http://localhost:8080/api/v1.0/cadmin/admin/categories/${categoryId}`,
+    `http://localhost:8080/api/v1.0/admin/categories/${categoryId}`,
     { headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}}
   );
 }

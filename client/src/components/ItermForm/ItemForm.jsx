@@ -66,9 +66,9 @@ const ItemForm = () => {
           <div className="card form-container">
             <div className="card-body">
               <form onSubmit={onSubmitHandler}>
-                <div className="mb-3">
+                <div className="mb-1">
                   <label htmlFor="image" className="form-label">
-                      <img src={image ? URL.createObjectURL(image) : assets.upload} alt="" width={48}/>
+                      <img src={image ? URL.createObjectURL(image) : assets.upload} alt="" width={55}/>
                   </label>
                   <input type="file" name="image" id="image" className='form-control' hidden onChange={(e) => setImage(e.target.files[0])}/>
                 </div>
