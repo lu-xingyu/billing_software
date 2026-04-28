@@ -25,6 +25,7 @@ public class DashboardController {
         Double todaySale = orderService.sumSalesByDate(today);
         Long todayOrderCount = orderService.countByOrderDate(today);
         List<OrderResponse> recentOrders = orderService.findRecentOrders();
+        System.out.println("Code Code Code Change!");
         return new DashboardResponse(
                 todaySale != null ? todaySale : 0.0,
                 todayOrderCount != null ? todayOrderCount : 0,

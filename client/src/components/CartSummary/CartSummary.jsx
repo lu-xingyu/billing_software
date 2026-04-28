@@ -25,7 +25,7 @@ const CartSummary = ({ customerName, mobileNumber, setCustomerName, setMobileNum
   const total = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   const totalAmount = Number(total.toFixed(2))
   const tax = Number((totalAmount * 0.01).toFixed(2));
-  const grandTotal = totalAmount + tax;
+  const grandTotal = Number((totalAmount + tax).toFixed(2));
 
   const clearAll = () => {
     setCustomerName("");

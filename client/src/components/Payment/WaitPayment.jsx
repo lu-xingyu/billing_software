@@ -51,7 +51,14 @@ const WaitPayment = ({ orderId, setCurrentOrder, showCheckout, setShowCheckout, 
         setLoading(false)
         setShowCheckout(false)
         toast.success("Payment successful")
-      } 
+      } else if (actualStatus === "FAILED") {
+        setCurrentOrder(response.data)
+        setPaymentStatus("failed")
+        clearInterval(interval)
+        setLoading(false)
+        setShowCheckout(false)
+        toast.error("Payment failed")        
+      }
     }, 2000)
 
     return () => clearInterval(interval)

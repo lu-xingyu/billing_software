@@ -69,7 +69,7 @@ const OrderHistory = () => {
                   <small className="text-muted">{order.phoneNumber}</small>
                 </td>
                 <td>{formatItems(order.items)}</td>
-                <td>&#8364;{order.grandTotal}</td>
+                <td>&#8364;{order.grandTotal.toFixed(2)}</td>
                 <td>{order.paymentMethod}</td>
                 <td><span className={`badge ${order.paymentDetails?.status === "COMPLETED" ? "bg-success" : "bg-warning text-dark"}`}>{order.paymentDetails?.status || "PENDING"}</span></td>
                 <td>{formatDate(order.createdAt)}</td>

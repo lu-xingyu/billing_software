@@ -13,7 +13,8 @@ GET http://localhost:8080/api/v1.0/categories
 Content-Type: application/json
 
 ### delete category
-DELETE http://localhost:8080/api/v1.0/admin/categories/7be165b6-4d72-43d4-9dc5-7ac85040aaaf
+DELETE http://localhost:8080/api/v1.0/admin/categories/70ba95b4-70c9-4ceb-9ddc-51b67595efc0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NzA5OTcyMDMsImV4cCI6MTc3MTAzMzIwM30.v5zuJiLBe4feJQg-9kEizzvhhwRSyWe0781Ui42NI38
 Content-Type: application/json
 
 ### add category with file
@@ -113,8 +114,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iL
 Content-Type: application/json
 
 ### delete items
-DELETE http://localhost:8080/api/v1.0/admin/items/42b3b520-d09f-4b7f-b313-a4c364a77aac
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3Njc3MzAyOTUsImV4cCI6MTc2Nzc2NjI5NX0.2uFmEH-Kozub2VBDopN6OS1H-LxYwoH2f-wg-EoS82s
+DELETE http://localhost:8080/api/v1.0/admin/items/299028ed-0654-4d84-8e44-a5c36af9a24d
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NzA5OTQ1OTksImV4cCI6MTc3MTAzMDU5OX0.ypVc04ujSDG4g9-Gx7SFPeEHbkWxjc6LI2KFjzpU66E
 Content-Type: application/json
 
 ### create order
@@ -140,8 +141,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iL
 }
 
 ### delete order
-DELETE http://localhost:8080/api/v1.0/orders/ORD1768139413627
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NzA0NjcwMTUsImV4cCI6MTc3MDUwMzAxNX0.3SKvb3A64Y_bflJw17PaknQ5bQPqUIM-o7N8rFC0nI4
+DELETE http://localhost:8080/api/v1.0/orders/ORD1770924431364
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NzA5OTQ1OTksImV4cCI6MTc3MTAzMDU5OX0.ypVc04ujSDG4g9-Gx7SFPeEHbkWxjc6LI2KFjzpU66E
 Content-Type: application/json
 
 ### read orders
@@ -162,7 +163,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iL
 
 ### read dashboard data
 GET http://localhost:8080/api/v1.0/dashboard
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3Njg0ODYwNjQsImV4cCI6MTc2ODUyMjA2NH0.Cswd5_ZtcQfO65ffHewYqS7eLRYCUQDn_0E-SSkpLrM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc3RoZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3NzU0MjM1MjIsImV4cCI6MTc3NTQ1OTUyMn0.3U7zaVfEciEN71bBLPe6WKMgoT6uVNhu9yXNMuyMBbY
 Content-Type: application/json
 
 
@@ -171,3 +172,8 @@ Content-Type: application/json
 GET http://localhost:8080/api/v1.0/orders/ORD1770544473912
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidXNoYW5AZXhhbXBsZS5jb20iLCJpYXQiOjE3NzA1NDY4MjMsImV4cCI6MTc3MDU4MjgyM30.VnhrgQva9ymgtLeJb-jLJE3JpUHydnikeM4mcxOfVF0
+
+### test
+GET http://localhost:8080/api/v1.0/dashboard/test
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlc3RoZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE3NzU0MjM1MjIsImV4cCI6MTc3NTQ1OTUyMn0.3U7zaVfEciEN71bBLPe6WKMgoT6uVNhu9yXNMuyMBbY
+Content-Type: application/json

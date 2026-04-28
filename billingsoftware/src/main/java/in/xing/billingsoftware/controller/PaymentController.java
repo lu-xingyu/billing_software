@@ -3,7 +3,6 @@ package in.xing.billingsoftware.controller;
 import com.stripe.exception.StripeException;
 import in.xing.billingsoftware.io.OrderResponse;
 import in.xing.billingsoftware.io.PaymentRequest;
-import in.xing.billingsoftware.io.PaymentVerificationRequest;
 import in.xing.billingsoftware.io.StripePaymentIntentResponse;
 import in.xing.billingsoftware.service.OrderService;
 import in.xing.billingsoftware.service.StripeService;
